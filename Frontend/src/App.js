@@ -202,6 +202,14 @@ function App() {
               },
             },
           },
+          MuiBackdrop: {
+            styleOverrides: {
+              root: {
+                backdropFilter: "blur(8px)",
+                backgroundColor: "rgba(0, 0, 0, 0.4)",
+              },
+            },
+          },
           MuiAlert: {
             styleOverrides: {
               root: {

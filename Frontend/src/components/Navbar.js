@@ -299,10 +299,12 @@ const Navbar = ({ setIsAuthenticated, colorMode }) => {
 
             {/* Logo */}
             <Box
+              onClick={() => navigate("/")}
               sx={{
                 display: "flex",
                 alignItems: "center",
                 mr: 1,
+                cursor: "pointer",
               }}
             >
               <img src="/logo.png" alt="Voltify Logo" style={{ height: "36px", objectFit: "contain", marginRight: "10px" }} />

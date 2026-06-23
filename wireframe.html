@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Voltify – Smart EV Parking & Charging Platform Prototype Wireframe" />
+  <title>Voltify — Prototype Wireframe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --green: #22c55e; --green-dark: #16a34a; --green-light: #4ade80;
+      --blue: #2563eb; --blue-dark: #1d4ed8; --blue-light: #60a5fa;
+      --emerald: #10b981; --amber: #f59e0b; --red: #f43f5e;
+      --cyan: #06b6d4; --purple: #8b5cf6;
+      --bg: #0f172a; --bg-paper: #1e293b; --bg-raised: #273548;
+      --text-primary: #f8fafc; --text-secondary: #94a3b8;
+      --divider: rgba(148,163,184,0.08);
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-heading: 'Outfit', 'Inter', sans-serif;
+      --sidebar-w: 260px; --topbar-h: 72px;
+      --radius: 12px; --radius-sm: 8px; --radius-lg: 16px;
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.3), 0 0 0 1px rgba(148,163,184,0.04);
+      --shadow-card-hover: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(148,163,184,0.06);
+    }
+    .light {
+      --bg: #f8fafc; --bg-paper: #ffffff; --bg-raised: #f1f5f9;
+      --text-primary: #0f172a; --text-secondary: #64748b;
+      --divider: rgba(15,23,42,0.08);
+      --shadow-card: 0 4px 24px rgba(15,23,42,0.06), 0 0 0 1px rgba(15,23,42,0.03);
+      --shadow-card-hover: 0 8px 32px rgba(15,23,42,0.1), 0 0 0 1px rgba(15,23,42,0.04);
+    }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: var(--font-body); cursor: pointer; border: none; outline: none; }
+    input, select, textarea { font-family: var(--font-body); outline: none; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .6; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .animate-slide-up { animation: slideUp 500ms ease-out both; }
+    .animate-scale { animation: scaleIn 400ms ease-out both; }
+    .animate-fade { animation: fadeIn 400ms ease-out both; }
+
+    /* ─── UTILITY ─── */
+    .flex { display: flex; } .flex-col { flex-direction: column; } .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; } .justify-center { justify-content: center; }
+    .gap-1 { gap: 8px; } .gap-2 { gap: 16px; } .gap-3 { gap: 24px; }
+    .text-sm { font-size: 0.8rem; } .text-md { font-size: 0.9rem; }
+    .fw-600 { font-weight: 600; } .fw-700 { font-weight: 700; } .fw-800 { font-weight: 800; } .fw-900 { font-weight: 900; }
+    .text-muted { color: var(--text-secondary); }
+    .heading { font-family: var(--font-heading); }
+    .hidden { display: none !important; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 24px; border-radius: 10px; font-weight: 700; font-size: 0.875rem;
+      transition: all 250ms cubic-bezier(0.4,0,0.2,1); letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+      color: #fff; box-shadow: 0 4px 14px rgba(34,197,94,0.35);
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, var(--green-light), var(--green)); box-shadow: 0 6px 20px rgba(34,197,94,0.45); transform: translateY(-1px); }
+    .btn-blue {
+      background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+      color: #fff; box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+    }
+    .btn-blue:hover { background: linear-gradient(135deg, var(--blue-light), var(--blue)); }
+    .btn-outline {
+      background: transparent; color: var(--text-primary);
+      border: 1.5px solid var(--divider);
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+    .btn-danger {
+      background: linear-gradient(135deg, var(--red), #e11d48);
+      color: #fff; box-shadow: 0 4px 14px rgba(244,63,94,0.3);
+    }
+    .btn-sm { padding: 6px 16px; font-size: 0.75rem; border-radius: 8px; }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: var(--bg-paper); border-radius: var(--radius); border: 1px solid var(--divider);
+      box-shadow: var(--shadow-card); transition: transform 250ms, box-shadow 250ms;
+    }
+    .card:hover { box-shadow: var(--shadow-card-hover); }
+    .card-body { padding: 24px; }
+
+    /* ─── CHIPS / BADGES ─── */
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+    }
+    .chip-green { background: rgba(34,197,94,0.1); color: var(--green); }
+    .chip-red { background: rgba(244,63,94,0.1); color: var(--red); }
+    .chip-amber { background: rgba(245,158,11,0.1); color: var(--amber); }
+    .chip-blue { background: rgba(37,99,235,0.1); color: var(--blue); }
+    .chip-emerald { background: rgba(16,185,129,0.1); color: var(--emerald); }
+    .chip-purple { background: rgba(139,92,246,0.1); color: var(--purple); }
+    .chip-outline { border: 1px solid; background: transparent; }
+
+    /* ─── AVATAR ─── */
+    .avatar {
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; font-family: var(--font-heading); font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ─── FORM INPUTS ─── */
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+    .input-group input, .input-group select {
+      width: 100%; padding: 12px 16px; border-radius: 10px; font-size: 0.9rem;
+      background: var(--bg); color: var(--text-primary);
+      border: 1px solid var(--divider); transition: border-color 250ms, box-shadow 250ms;
+    }
+    .input-group input:focus, .input-group select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.15); }
+
+    /* ─── TABLE ─── */
+    .table-wrapper { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--divider); }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: var(--bg-raised); }
+    th { text-align: left; padding: 12px 16px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); font-weight: 800; }
+    td { padding: 14px 16px; border-top: 1px solid var(--divider); font-size: 0.85rem; }
+    tr:hover td { background: rgba(34,197,94,0.02); }
+
+    /* ─── SWITCH ─── */
+    .switch { position: relative; width: 44px; height: 24px; cursor: pointer; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch .slider { position: absolute; inset: 0; background: var(--divider); border-radius: 24px; transition: 0.3s; }
+    .switch .slider::before {
+      content: ''; position: absolute; height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%; transition: 0.3s;
+    }
+    .switch input:checked + .slider { background: var(--green); }
+    .switch input:checked + .slider::before { transform: translateX(20px); }
+
+    /* ─── DIALOG/MODAL ─── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      animation: fadeIn 200ms ease-out;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--bg-paper); border-radius: var(--radius-lg); border: 1px solid var(--divider);
+      max-width: 440px; width: 90%; max-height: 85vh; overflow-y: auto;
+      animation: scaleIn 300ms ease-out;
+    }
+    .modal-header { padding: 24px 24px 8px; }
+    .modal-header h3 { font-family: var(--font-heading); font-weight: 800; }
+    .modal-body { padding: 16px 24px; }
+    .modal-footer { padding: 16px 24px 24px; display: flex; gap: 8px; justify-content: flex-end; }
+
+    /* ─── TABS ─── */
+    .tab-bar {
+      display: inline-flex; padding: 6px; border-radius: var(--radius);
+      background: var(--bg-paper); border: 1px solid var(--divider);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+    }
+    .tab-btn {
+      padding: 10px 24px; border-radius: 10px; font-weight: 700; font-size: 0.9rem;
+      font-family: var(--font-heading); color: var(--text-secondary); background: transparent;
+      display: flex; align-items: center; gap: 8px; transition: all 0.3s;
+    }
+    .tab-btn:hover { color: var(--text-primary); }
+    .tab-btn.active {
+      color: #fff; background: linear-gradient(135deg, var(--green), var(--green-dark));
+      box-shadow: 0 4px 12px rgba(34,197,94,0.35);
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h);
+      z-index: 1001; display: flex; align-items: center; padding: 0 24px;
+      border-bottom: 1px solid var(--divider);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+    body:not(.light) .topbar { background: linear-gradient(90deg, rgba(10,14,26,0.85), rgba(17,24,39,0.9)); }
+    .light .topbar { background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(241,245,249,0.95)); }
+    .topbar-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .topbar-logo img { height: 36px; }
+    .topbar-logo span { font-family: var(--font-heading); font-weight: 800; font-size: 1.05rem; }
+    .role-badge {
+      margin-left: 12px; display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .role-badge-admin { background: rgba(37,99,235,0.08); color: var(--blue); border: 1px solid rgba(37,99,235,0.15); }
+    .role-badge-user { background: rgba(34,197,94,0.08); color: var(--green); border: 1px solid rgba(34,197,94,0.15); }
+    .topbar-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+    .notif-btn {
+      position: relative; width: 40px; height: 40px; border-radius: 10px; background: transparent;
+      display: flex; align-items: center; justify-content: center; color: var(--text-primary); font-size: 1.2rem;
+    }
+    .notif-btn .notif-dot {
+      position: absolute; top: 6px; right: 6px; width: 8px; height: 8px;
+      background: var(--red); border-radius: 50%; border: 2px solid var(--bg-paper);
+    }
+    .user-pill {
+      display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+      border-radius: 10px; border: 1px solid var(--divider);
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      position: fixed; top: var(--topbar-h); left: 0; bottom: 0;
+      width: var(--sidebar-w); z-index: 1000;
+      border-right: 1px solid var(--divider); background: var(--bg-paper);
+      display: flex; flex-direction: column; padding: 16px;
+      overflow-y: auto;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-radius: 10px; font-weight: 600; font-size: 0.875rem;
+      font-family: var(--font-heading); color: var(--text-secondary);
+      transition: all 200ms; cursor: pointer; position: relative; margin-bottom: 4px;
+    }
+    .sidebar-link:hover { background: rgba(148,163,184,0.06); color: var(--text-primary); }
+    .sidebar-link.active {
+      color: #fff; background: linear-gradient(135deg, var(--green), var(--green-dark));
+      box-shadow: 0 4px 16px rgba(34,197,94,0.3);
+    }
+    .sidebar-link.active::after {
+      content: ''; position: absolute; right: 12px; width: 6px; height: 6px;
+      border-radius: 50%; background: #fff; opacity: 0.8;
+    }
+    .sidebar-link svg, .sidebar-link .icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .sidebar-support {
+      margin-top: auto; padding: 20px; border-radius: var(--radius);
+      border: 1px solid rgba(34,197,94,0.1);
+    }
+    body:not(.light) .sidebar-support { background: linear-gradient(180deg, rgba(34,197,94,0.08), rgba(37,99,235,0.04)); }
+    .light .sidebar-support { background: linear-gradient(180deg, rgba(34,197,94,0.06), rgba(241,245,249,1)); }
+
+    /* ─── MAIN AREA ─── */
+    .main {
+      margin-left: var(--sidebar-w); margin-top: var(--topbar-h);
+      padding: 32px; min-height: calc(100vh - var(--topbar-h));
+    }
+    .main.no-sidebar { margin-left: 0; }
+
+    /* ─── PAGES ─── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── FULL-SCREEN PAGES (Login, Register, Welcome) ─── */
+    .fullscreen-page {
+      position: fixed; inset: 0; z-index: 2000; display: none;
+      align-items: center; justify-content: center;
+    }
+    .fullscreen-page.active { display: flex; }
+    body:not(.light) .fullscreen-page { background: linear-gradient(135deg, #0a0e1a, #111827, #0f172a); }
+    .light .fullscreen-page { background: linear-gradient(135deg, #f8fafc, #e2e8f0, #f1f5f9); }
+
+    /* ─── STAT CARDS ─── */
+    .stat-card .stat-value { font-family: var(--font-heading); font-weight: 900; font-size: 1.8rem; }
+    .stat-card .stat-label { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* ─── SLOT CARD ─── */
+    .slot-card { transition: transform 200ms; }
+    .slot-card:hover { transform: translateY(-4px); }
+    .slot-card .slot-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .slot-card .slot-props { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; border-radius: 10px; background: var(--bg); border: 1px solid var(--divider); }
+    .slot-card .slot-prop-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: var(--text-secondary); }
+    .slot-card .slot-prop-value { font-size: 0.9rem; font-weight: 800; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+    /* ─── STATION CARD ─── */
+    .station-info { display: grid; gap: 12px; padding: 16px; border-radius: 10px; background: var(--bg); border: 1px solid var(--divider); }
+    .station-info-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* ─── NOTIFICATION PANEL ─── */
+    .notif-panel {
+      position: fixed; top: var(--topbar-h); right: 16px; width: 380px; max-height: 500px;
+      background: var(--bg-paper); border: 1px solid var(--divider); border-radius: var(--radius-lg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.3); z-index: 10001; overflow-y: auto;
+      animation: slideUp 200ms ease-out;
+    }
+    .notif-item { padding: 16px; border-bottom: 1px solid var(--divider); display: flex; gap: 12px; cursor: pointer; transition: background 150ms; }
+    .notif-item:hover { background: rgba(34,197,94,0.03); }
+
+    /* ─── PROGRESS BAR ─── */
+    .progress-bar { height: 4px; border-radius: 4px; background: rgba(148,163,184,0.1); overflow: hidden; }
+    .progress-bar .fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width 100ms linear; }
+
+    /* ─── GRID UTILS ─── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    @media (max-width: 768px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+    }
+
+    /* ─── DONUT CHART ─── */
+    .donut-chart { position: relative; width: 200px; height: 200px; margin: 0 auto; }
+    .donut-center {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; z-index: 1;
+    }
+
+    /* ─── SETTINGS VERTICAL TABS ─── */
+    .settings-tab {
+      display: flex; align-items: center; gap: 16px; padding: 16px 20px; width: 100%;
+      font-weight: 700; font-size: 0.9rem; border-bottom: 1px solid var(--divider);
+      color: var(--text-secondary); cursor: pointer; transition: all 200ms; background: transparent;
+      text-align: left;
+    }
+    .settings-tab:hover { color: var(--text-primary); }
+    .settings-tab.active { color: var(--green); background: rgba(34,197,94,0.04); border-left: 4px solid var(--green); }
+
+    /* ─── PREFERENCE ROW ─── */
+    .pref-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px; border: 1px solid var(--divider); border-radius: 10px; margin-bottom: 8px;
+    }
+
+    /* ─── SLIDER ─── */
+    .slider-track {
+      width: 100%; height: 6px; border-radius: 4px; background: var(--divider);
+      position: relative; cursor: pointer;
+    }
+    .slider-track .slider-fill {
+      height: 100%; border-radius: 4px; background: var(--emerald);
+    }
+    .slider-track .slider-thumb {
+      width: 20px; height: 20px; border-radius: 50%; background: var(--emerald);
+      position: absolute; top: -7px; box-shadow: 0 2px 8px rgba(16,185,129,0.4);
+      cursor: grab;
+    }
+
+    /* ─── ROLE SWITCHER (prototype controls) ─── */
+    .proto-controls {
+      position: fixed; bottom: 24px; right: 24px; z-index: 20000;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .proto-controls button {
+      padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 0.8rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); transition: all 200ms; border: 1px solid var(--divider);
+      background: var(--bg-paper); color: var(--text-primary);
+    }
+    .proto-controls button:hover { transform: translateY(-2px); }
+    .proto-controls button.active-ctrl { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* ─── LIVE CHARGING WIDGET ─── */
+    .live-widget { position: relative; overflow: hidden; }
+    .live-widget::before {
+      content: ''; position: absolute; inset: 0; border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(37,99,235,0.03));
+      z-index: 0;
+    }
+    .live-widget > * { position: relative; z-index: 1; }
+    .battery-ring {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: conic-gradient(var(--emerald) calc(var(--pct) * 1%), var(--divider) 0);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .battery-ring-inner {
+      width: 96px; height: 96px; border-radius: 50%; background: var(--bg-paper);
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+    }
+  </style>
+</head>
+<body class="light">
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       LOGIN PAGE
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <div id="page-login" class="fullscreen-page active">
+    <div style="max-width:1100px; width:100%; padding:32px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;">
+      <!-- Left branding -->
+      <div class="animate-slide-up">
+        <div class="flex items-center gap-2" style="margin-bottom:32px;">
+          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--emerald));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;">⚡</div>
+          <span class="heading fw-800" style="font-size:1.3rem;">Voltify</span>
+        </div>
+        <h1 class="heading fw-900" style="font-size:2.6rem;line-height:1.15;margin-bottom:20px;">
+          Smart parking <span style="background:linear-gradient(135deg,var(--green),var(--emerald));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">control</span> for EV drivers
+        </h1>
+        <p class="text-muted" style="font-size:1rem;line-height:1.7;margin-bottom:32px;max-width:440px;">
+          Find available charging slots, reserve parking spaces, monitor charging sessions, and manage your EV journey in real time from one intelligent platform
+        </p>
+        <div class="flex gap-1" style="flex-wrap:wrap;">
+          <span class="chip chip-green" style="padding:8px 16px;">Real-time Slots</span>
+          <span class="chip chip-green" style="padding:8px 16px;">EV Charging</span>
+          <span class="chip chip-green" style="padding:8px 16px;">Smart Booking</span>
+          <span class="chip chip-green" style="padding:8px 16px;">Analytics</span>
+        </div>
+      </div>
+      <!-- Right login form -->
+      <div class="card animate-slide-up" style="animation-delay:200ms;backdrop-filter:blur(20px);">
+        <div class="card-body" style="padding:40px;">
+          <div class="flex justify-between items-center" style="margin-bottom:16px;">
+            <div></div>
+            <div class="flex items-center gap-1" style="padding:4px 12px;border-radius:8px;background:var(--bg);font-size:0.75rem;">
+              ☀️ <label class="switch" style="margin:0 4px;"><input type="checkbox" id="login-theme-toggle" checked><span class="slider"></span></label> 🌙
+            </div>
+          </div>
+          <h2 class="heading fw-800" style="font-size:1.6rem;margin-bottom:4px;">Welcome back</h2>
+          <p class="text-muted text-md" style="margin-bottom:28px;">Sign in to continue to your dashboard.</p>
+          <div class="input-group">
+            <label>Email address</label>
+            <input type="email" placeholder="you@example.com" value="driver@voltify.com" />
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••" value="password123" />
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;margin-top:8px;" onclick="handleLogin()">Sign In</button>
+          <p class="text-muted" style="text-align:center;margin-top:20px;font-size:0.85rem;">
+            Don't have an account? <a href="#" style="color:var(--green);font-weight:700;" onclick="showPage('page-register');return false;">Create account</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       REGISTER PAGE
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <div id="page-register" class="fullscreen-page">
+    <div style="max-width:700px; width:100%; padding:32px;">
+      <div class="card animate-slide-up" style="backdrop-filter:blur(20px);">
+        <div class="card-body" style="padding:40px;">
+          <div class="flex items-center gap-2" style="margin-bottom:8px;">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--green),var(--emerald));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.4rem;">⚡</div>
+            <div>
+              <span class="heading fw-800" style="font-size:1.1rem;display:block;">Voltify</span>
+              <span class="text-muted text-sm" id="register-subtitle">Create your driver account</span>
+            </div>
+          </div>
+          <!-- Account type toggle -->
+          <div style="display:flex;padding:4px;margin:24px 0;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+            <button id="reg-type-user" class="tab-btn active" style="flex:1;font-size:0.85rem;" onclick="setRegType('user')">⚡ EV Driver</button>
+            <button id="reg-type-admin" class="tab-btn" style="flex:1;font-size:0.85rem;" onclick="setRegType('admin')">🅿️ Parking Owner</button>
+          </div>
+          <!-- Step indicators -->
+          <div class="flex gap-1" style="margin-bottom:24px;">
+            <div style="flex:1;text-align:center;">
+              <div style="height:3px;border-radius:4px;background:linear-gradient(90deg,var(--green),var(--emerald));margin-bottom:6px;"></div>
+              <span class="text-sm fw-600" style="color:var(--green);text-transform:uppercase;letter-spacing:0.05em;">Personal Info</span>
+            </div>
+            <div style="flex:1;text-align:center;">
+              <div style="height:3px;border-radius:4px;background:var(--divider);margin-bottom:6px;"></div>
+              <span class="text-sm fw-600 text-muted" style="text-transform:uppercase;letter-spacing:0.05em;" id="reg-step2-label">Vehicle Details</span>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="input-group"><label>Full Name</label><input placeholder="John Doe" /></div>
+            <div class="input-group"><label>Email</label><input type="email" placeholder="john@example.com" /></div>
+            <div class="input-group"><label>Password</label><input type="password" placeholder="••••••••" /></div>
+            <div class="input-group"><label>Confirm Password</label><input type="password" placeholder="••••••••" /></div>
+            <div class="input-group"><label>Phone</label><input placeholder="+94 77 123 4567" /></div>
+            <div class="input-group" id="reg-vehicle"><label>Vehicle Number</label><input placeholder="ABC-1234" /></div>
+          </div>
+          <div class="input-group" id="reg-vehicle-type">
+            <label>Vehicle Type</label>
+            <select><option>Any</option><option>Sedan</option><option>SUV</option><option>Hatchback</option><option>Truck</option></select>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;" onclick="showPage('page-login')">Create Driver Account</button>
+          <p class="text-muted" style="text-align:center;margin-top:20px;font-size:0.85rem;">
+            Already have an account? <a href="#" style="color:var(--green);font-weight:700;" onclick="showPage('page-login');return false;">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       WELCOME PAGE
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <div id="page-welcome" class="fullscreen-page" style="text-align:center;">
+    <div style="max-width:680px;width:100%;padding:24px;" class="animate-scale">
+      <div class="flex justify-center items-center gap-2" style="margin-bottom:32px;">
+        <div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--green),var(--emerald));display:flex;align-items:center;justify-content:center;color:#fff;font-size:2rem;">⚡</div>
+        <span class="heading fw-800" style="font-size:1.4rem;">Voltify</span>
+      </div>
+      <p class="text-muted" style="font-size:0.95rem;margin-bottom:8px;" id="welcome-greeting">Good Afternoon,</p>
+      <h1 class="heading fw-900" style="font-size:3rem;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--text-secondary),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="welcome-name">Tharusha</h1>
+      <div id="welcome-role-badge" class="chip chip-green" style="padding:8px 20px;margin-bottom:24px;display:inline-flex;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;">
+        🧑 EV Driver
+      </div>
+      <div class="card" style="max-width:450px;margin:0 auto 24px;text-align:center;">
+        <div class="card-body" style="padding:16px 24px;">
+          <p class="text-md" id="welcome-msg">Ready to charge your vehicle? Find the nearest available parking slot and plug in.</p>
+        </div>
+      </div>
+      <p class="text-muted text-sm" style="margin-bottom:24px;" id="welcome-datetime"></p>
+      <button class="btn btn-primary" style="padding:14px 40px;font-size:1rem;" onclick="enterApp()" id="welcome-continue-btn">Continue to Home →</button>
+      <div style="max-width:300px;margin:24px auto 0;">
+        <div class="progress-bar"><div class="fill" id="welcome-progress" style="width:0%;"></div></div>
+        <p class="text-muted text-sm" style="margin-top:8px;">Auto-redirecting in a moment...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       APP SHELL (Topbar + Sidebar + Main)
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <div id="app-shell" class="hidden">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="topbar-logo" onclick="goHome()">
+        <div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--emerald));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.1rem;">⚡</div>
+        <span>Voltify</span>
+      </div>
+      <div id="role-badge-topbar" class="role-badge role-badge-user">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--green);"></span>
+        Driver
+      </div>
+      <div class="topbar-right">
+        <button class="notif-btn" onclick="toggleNotifPanel()">
+          🔔 <span class="notif-dot"></span>
+        </button>
+        <div class="user-pill">
+          <div class="avatar" style="width:32px;height:32px;background:rgba(59,130,246,0.12);color:#3b82f6;font-size:13px;" id="topbar-avatar">T</div>
+          <span class="fw-700 text-sm" id="topbar-name">Tharusha</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS PANEL -->
+    <div id="notif-panel" class="notif-panel hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--divider);" class="flex justify-between items-center">
+        <span class="heading fw-800">Notifications</span>
+        <button class="btn btn-sm btn-outline" onclick="toggleNotifPanel()">Close</button>
+      </div>
+      <div class="notif-item">
+        <div class="avatar" style="width:36px;height:36px;background:rgba(34,197,94,0.1);color:var(--green);font-size:0.9rem;">✅</div>
+        <div>
+          <p class="fw-700 text-sm">Booking Confirmed</p>
+          <p class="text-muted text-sm">Slot A3 has been reserved for you.</p>
+          <p class="text-muted" style="font-size:0.7rem;margin-top:4px;">2 minutes ago</p>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="avatar" style="width:36px;height:36px;background:rgba(245,158,11,0.1);color:var(--amber);font-size:0.9rem;">⚡</div>
+        <div>
+          <p class="fw-700 text-sm">Charging Complete</p>
+          <p class="text-muted text-sm">Your vehicle is fully charged at Slot A1.</p>
+          <p class="text-muted" style="font-size:0.7rem;margin-top:4px;">15 minutes ago</p>
+        </div>
+      </div>
+      <div class="notif-item">
+        <div class="avatar" style="width:36px;height:36px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:0.9rem;">📢</div>
+        <div>
+          <p class="fw-700 text-sm">System Maintenance</p>
+          <p class="text-muted text-sm">Scheduled downtime tomorrow at 2:00 AM.</p>
+          <p class="text-muted" style="font-size:0.7rem;margin-top:4px;">1 hour ago</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main" id="main-content">
+
+      <!-- ═══ USER: HOME ═══ -->
+      <div id="user-home" class="page active">
+        <div style="margin-bottom:32px;" class="animate-slide-up">
+          <p class="fw-700 text-sm" style="color:var(--green);margin-bottom:4px;" id="home-greeting">Good Afternoon, Tharusha 👋</p>
+          <h2 class="heading fw-800" style="font-size:1.8rem;margin-bottom:8px;">Find & Book Your Spot</h2>
+          <p class="text-muted text-md">Browse available parking slots and nearby charging stations.</p>
+        </div>
+        <!-- Active Booking Alert -->
+        <div id="active-booking-alert" class="hidden" style="padding:14px 20px;border-radius:10px;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);color:var(--cyan);margin-bottom:24px;display:flex;align-items:center;gap:10px;font-weight:600;font-size:0.9rem;">
+          ℹ️ You have an active booking. You cannot book another slot until this one is completed.
+        </div>
+
+        <!-- Ready to Charge Card -->
+        <div id="ready-to-charge" class="hidden">
+          <div class="card animate-slide-up" style="border-left:4px solid var(--amber);margin-bottom:32px;">
+            <div class="card-body" style="padding:40px;text-align:center;">
+              <div style="display:inline-flex;padding:16px;border-radius:50%;background:rgba(245,158,11,0.1);margin-bottom:16px;">
+                <span style="font-size:3rem;">⚡</span>
+              </div>
+              <h2 class="heading fw-800" style="font-size:1.5rem;margin-bottom:8px;">Ready to Charge</h2>
+              <p class="text-muted text-md" style="max-width:400px;margin:0 auto 32px;">You have successfully booked Slot <strong id="booked-slot-name">A1</strong>. Please park your vehicle and plug in the charger to begin.</p>
+              <div class="flex justify-center gap-2">
+                <button class="btn btn-outline" style="color:var(--red);border-color:rgba(244,63,94,0.3);padding:12px 24px;border-radius:12px;font-size:1rem;" onclick="cancelBooking()">Cancel Booking</button>
+                <button class="btn" style="background:linear-gradient(135deg,var(--emerald),#059669);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,0.3);padding:12px 32px;border-radius:12px;font-size:1rem;" onclick="startCharging()">🔋 Plug In & Start Charging</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Charging Widget -->
+        <div id="live-charging-widget" class="hidden">
+          <div class="card animate-slide-up" style="border-left:4px solid var(--emerald);margin-bottom:32px;">
+            <div class="card-body" style="padding:32px;">
+              <!-- Header -->
+              <div class="flex justify-between items-center" style="margin-bottom:24px;">
+                <div class="flex items-center gap-2">
+                  <span style="width:10px;height:10px;border-radius:50%;background:var(--emerald);box-shadow:0 0 12px rgba(16,185,129,0.5);animation:pulse 2s infinite;"></span>
+                  <span class="heading fw-800" style="font-size:1.15rem;">Live Charging</span>
+                  <span class="chip chip-emerald" style="border:1px solid rgba(16,185,129,0.2);" id="live-charger-type">AC</span>
+                </div>
+                <button class="btn btn-danger btn-sm" style="border-radius:8px;" onclick="showModal('modal-stop-charging')">🛑 Stop Charging</button>
+              </div>
+              <!-- Content Grid -->
+              <div style="display:grid;grid-template-columns:1fr 2fr;gap:24px;">
+                <!-- Battery Ring -->
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 0;">
+                  <div class="battery-ring" style="--pct:45;">
+                    <div class="battery-ring-inner">
+                      <span style="font-size:1.5rem;">🔋</span>
+                      <span class="heading fw-900" style="font-size:2rem;color:var(--emerald);line-height:1;" id="live-battery-pct">45%</span>
+                    </div>
+                  </div>
+                  <p class="text-muted fw-600 text-sm" style="margin-top:12px;" id="live-time-remaining">4h 28m remaining</p>
+                </div>
+                <!-- Stats -->
+                <div>
+                  <div class="grid-2" style="gap:12px;">
+                    <div style="padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+                      <div class="flex items-center gap-1" style="margin-bottom:6px;"><div class="avatar" style="width:28px;height:28px;background:rgba(245,158,11,0.1);color:var(--amber);font-size:0.7rem;">⚡</div><span class="text-sm text-muted fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Energy Consumed</span></div>
+                      <span class="heading fw-900" style="font-size:1.3rem;" id="live-energy">5.55 kWh</span>
+                    </div>
+                    <div style="padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+                      <div class="flex items-center gap-1" style="margin-bottom:6px;"><div class="avatar" style="width:28px;height:28px;background:rgba(59,130,246,0.1);color:#3b82f6;font-size:0.7rem;">⏱️</div><span class="text-sm text-muted fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Session Duration</span></div>
+                      <span class="heading fw-900" style="font-size:1.3rem;" id="live-duration">0h 45m</span>
+                    </div>
+                    <div style="padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+                      <div class="flex items-center gap-1" style="margin-bottom:6px;"><div class="avatar" style="width:28px;height:28px;background:rgba(16,185,129,0.1);color:var(--emerald);font-size:0.7rem;">💰</div><span class="text-sm text-muted fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Charging Cost</span></div>
+                      <span class="heading fw-900" style="font-size:1.3rem;" id="live-charge-cost">$1.39</span>
+                    </div>
+                    <div style="padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+                      <div class="flex items-center gap-1" style="margin-bottom:6px;"><div class="avatar" style="width:28px;height:28px;background:rgba(249,115,22,0.1);color:#f97316;font-size:0.7rem;">🅿️</div><span class="text-sm text-muted fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Parking Cost</span></div>
+                      <span class="heading fw-900" style="font-size:1.3rem;" id="live-parking-cost">$2.00</span>
+                    </div>
+                    <div style="padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+                      <div class="flex items-center gap-1" style="margin-bottom:6px;"><div class="avatar" style="width:28px;height:28px;background:rgba(139,92,246,0.1);color:var(--purple);font-size:0.7rem;">⚙️</div><span class="text-sm text-muted fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Charger Power</span></div>
+                      <span class="heading fw-900" style="font-size:1.3rem;" id="live-power">7.4 kW</span>
+                    </div>
+                    <div style="padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+                      <div class="flex items-center gap-1" style="margin-bottom:6px;"><div class="avatar" style="width:28px;height:28px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:0.7rem;">💳</div><span class="text-sm text-muted fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Total Cost</span></div>
+                      <span class="heading fw-900" style="font-size:1.3rem;" id="live-total-cost">$3.39</span>
+                    </div>
+                  </div>
+                  <!-- Session Info Bar -->
+                  <div style="margin-top:12px;padding:12px 16px;border-radius:10px;background:var(--bg);border:1px solid var(--divider);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+                    <span class="text-sm text-muted">Slot: <strong id="live-slot">A1</strong></span>
+                    <span class="text-sm text-muted">Started: <strong id="live-start-time">10:00 AM</strong></span>
+                    <span class="text-sm text-muted">Initial Battery: <strong id="live-initial-batt">20%</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div style="margin-bottom:32px;" id="home-tabs-container">
+          <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchHomeTab('slots',this)">🅿️ Available Slots</button>
+            <button class="tab-btn" onclick="switchHomeTab('stations',this)">⚡ Charging Stations</button>
+          </div>
+        </div>
+        <!-- Slots Tab -->
+        <div id="home-tab-slots" class="grid-3">
+          <!-- Generated by JS -->
+        </div>
+        <!-- Stations Tab -->
+        <div id="home-tab-stations" class="grid-3 hidden">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+
+      <!-- ═══ USER: CHARGING HISTORY ═══ -->
+      <div id="user-charging" class="page">
+        <div class="flex items-center gap-2" style="margin-bottom:32px;">
+          <div class="avatar" style="width:48px;height:48px;background:rgba(16,185,129,0.1);color:var(--emerald);font-size:1.3rem;">⚡</div>
+          <div>
+            <p class="fw-700 text-sm" style="color:var(--emerald);">EV Charging</p>
+            <h2 class="heading fw-800" style="font-size:1.6rem;">Charging History</h2>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="flex items-center gap-2" style="margin-bottom:20px;">
+              <div class="avatar" style="width:40px;height:40px;background:rgba(139,92,246,0.1);color:var(--purple);font-size:1rem;">📋</div>
+              <span class="heading fw-800" style="font-size:1.05rem;">Past Sessions</span>
+              <span class="chip chip-blue">5</span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead><tr><th>Slot</th><th>Charger</th><th>Start</th><th>End</th><th>Duration</th><th>Energy</th><th>Total</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td class="heading fw-700">A1</td><td><span class="chip chip-green">AC</span></td><td>Jun 23, 10:00 AM</td><td>Jun 23, 1:30 PM</td><td class="fw-600">3h 30m</td><td class="fw-700" style="color:var(--amber);">25.9 kWh</td><td class="fw-800" style="color:var(--emerald);">$6.48</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+                  <tr><td class="heading fw-700">B2</td><td><span class="chip chip-amber">DC-Fast</span></td><td>Jun 22, 2:15 PM</td><td>Jun 22, 3:45 PM</td><td class="fw-600">1h 30m</td><td class="fw-700" style="color:var(--amber);">75.0 kWh</td><td class="fw-800" style="color:var(--emerald);">$18.75</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+                  <tr><td class="heading fw-700">A4</td><td><span class="chip chip-emerald">Super-Fast</span></td><td>Jun 21, 9:00 AM</td><td>Jun 21, 9:30 AM</td><td class="fw-600">0h 30m</td><td class="fw-700" style="color:var(--amber);">75.0 kWh</td><td class="fw-800" style="color:var(--emerald);">$18.75</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+                  <tr><td class="heading fw-700">A2</td><td><span class="chip chip-green">AC</span></td><td>Jun 20, 8:00 AM</td><td>Jun 20, 2:00 PM</td><td class="fw-600">6h 0m</td><td class="fw-700" style="color:var(--amber);">44.4 kWh</td><td class="fw-800" style="color:var(--emerald);">$11.10</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+                  <tr><td class="heading fw-700">A3</td><td><span class="chip chip-green">AC</span></td><td>Jun 19, 11:00 AM</td><td>—</td><td class="fw-600">—</td><td class="fw-700" style="color:var(--amber);">—</td><td class="fw-800" style="color:var(--emerald);">—</td><td><span class="chip chip-red chip-outline">cancelled</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ USER / ADMIN: SETTINGS ═══ -->
+      <div id="user-settings" class="page">
+        <div style="margin-bottom:32px;">
+          <p class="fw-800" style="color:var(--green);">User Management</p>
+          <h2 class="heading fw-900" style="font-size:1.8rem;">Settings</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:240px 1fr;gap:24px;">
+          <!-- Settings sidebar -->
+          <div class="card" style="height:fit-content;">
+            <button class="settings-tab active" onclick="switchSettingsTab('profile',this)">👤 Profile</button>
+            <button class="settings-tab" onclick="switchSettingsTab('prefs',this)">⚙️ Preferences</button>
+            <button class="settings-tab" onclick="switchSettingsTab('security',this)">🔒 Security</button>
+            <div style="padding:16px;margin-top:auto;display:flex;flex-direction:column;gap:8px;">
+              <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="showPage('page-login')">🚪 Log Out</button>
+              <button class="btn btn-outline" style="width:100%;justify-content:center;color:var(--red);border-color:rgba(244,63,94,0.3);" onclick="showModal('modal-delete-account')">🗑️ Delete Account</button>
+            </div>
+          </div>
+          <!-- Settings content -->
+          <div class="card">
+            <div class="card-body">
+              <!-- Profile Tab -->
+              <div id="settings-tab-profile">
+                <div class="flex items-center gap-3" style="padding-bottom:24px;border-bottom:1px solid var(--divider);margin-bottom:24px;">
+                  <div class="avatar" style="width:80px;height:80px;background:linear-gradient(135deg,var(--green),var(--emerald));color:#fff;font-size:2rem;box-shadow:0 8px 24px rgba(34,197,94,0.25);">T</div>
+                  <div style="flex:1;">
+                    <h3 class="heading fw-800" style="font-size:1.3rem;">Tharusha Perera</h3>
+                    <p class="text-muted text-md">tharusha@voltify.com</p>
+                    <span class="chip chip-green" style="margin-top:6px;">⚡ EV Driver</span>
+                  </div>
+                  <button class="btn btn-outline">✏️ Edit Profile</button>
+                </div>
+                <div class="grid-2">
+                  <div class="input-group"><label>Full Name</label><input value="Tharusha Perera" disabled /></div>
+                  <div class="input-group"><label>Email</label><input value="tharusha@voltify.com" disabled /></div>
+                  <div class="input-group"><label>Phone</label><input value="+94 77 123 4567" disabled /></div>
+                  <div class="input-group"><label>Vehicle Number</label><input value="ABC-1234" disabled /></div>
+                </div>
+              </div>
+              <!-- Preferences Tab -->
+              <div id="settings-tab-prefs" class="hidden">
+                <h3 class="heading fw-800" style="margin-bottom:20px;">Appearance</h3>
+                <div class="pref-row" style="margin-bottom:24px;">
+                  <div class="flex items-center gap-2">
+                    <div class="avatar" style="width:40px;height:40px;background:rgba(37,99,235,0.08);color:var(--blue);font-size:1rem;">🌙</div>
+                    <div><p class="fw-800">Dark Mode</p><p class="text-muted text-sm">Switch between light and dark UI themes.</p></div>
+                  </div>
+                  <label class="switch"><input type="checkbox" onchange="toggleTheme()"><span class="slider"></span></label>
+                </div>
+                <h3 class="heading fw-800" style="margin-bottom:20px;">Notification Settings</h3>
+                <div class="pref-row"><div><p class="fw-700">Booking Notifications</p><p class="text-muted text-sm">Alerts for confirmed and cancelled bookings.</p></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="pref-row"><div><p class="fw-700">Charging Notifications</p><p class="text-muted text-sm">Updates when charging starts and ends.</p></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="pref-row"><div><p class="fw-700">Payment Notifications</p><p class="text-muted text-sm">Receipts and payment confirmations.</p></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                <div class="pref-row"><div><p class="fw-700">System Announcements</p><p class="text-muted text-sm">Important system news and maintenance alerts.</p></div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+              </div>
+              <!-- Security Tab -->
+              <div id="settings-tab-security" class="hidden">
+                <h3 class="heading fw-800" style="margin-bottom:20px;">Change Password</h3>
+                <div class="input-group"><label>Current Password</label><input type="password" placeholder="••••••••" /></div>
+                <div class="grid-2">
+                  <div class="input-group"><label>New Password</label><input type="password" placeholder="••••••••" /></div>
+                  <div class="input-group"><label>Confirm New Password</label><input type="password" placeholder="••••••••" /></div>
+                </div>
+                <button class="btn btn-primary">Update Password</button>
+                <hr style="border:none;border-top:1px solid var(--divider);margin:32px 0;">
+                <h3 class="heading fw-800" style="margin-bottom:20px;">Privacy Controls</h3>
+                <div style="padding:20px;border:1px solid var(--divider);border-radius:10px;">
+                  <p class="fw-700" style="margin-bottom:4px;">Account Visibility</p>
+                  <p class="text-muted text-sm" style="margin-bottom:16px;">Determine how your profile information is shared within the Voltify network.</p>
+                  <div class="input-group" style="margin-bottom:0;"><label>Privacy Mode</label><select><option>Private (Restricted visibility)</option><option>Public (Visible to network)</option></select></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ADMIN: DASHBOARD ═══ -->
+      <div id="admin-dashboard" class="page">
+        <div class="flex justify-between items-center" style="margin-bottom:32px;">
+          <div>
+            <p class="fw-700 text-sm" style="color:var(--green);">Good Afternoon, Admin 👋</p>
+            <h2 class="heading fw-800" style="font-size:1.8rem;">Admin Dashboard</h2>
+          </div>
+          <span class="chip" style="padding:10px 16px;background:var(--bg-paper);border:1px solid var(--divider);">📅 Mon, Jun 23</span>
+        </div>
+        <!-- Stat Cards -->
+        <div class="grid-4" style="margin-bottom:28px;">
+          <div class="card stat-card animate-slide-up"><div class="card-body"><div class="flex justify-between items-center"><div><p class="stat-label">Total Slots</p><p class="stat-value">12</p><p class="text-muted text-sm" style="margin-top:4px;">All parking slots</p></div><div class="avatar" style="width:56px;height:56px;background:rgba(34,197,94,0.1);color:var(--green);font-size:1.5rem;">🚗</div></div></div></div>
+          <div class="card stat-card animate-slide-up" style="animation-delay:80ms;"><div class="card-body"><div class="flex justify-between items-center"><div><p class="stat-label">Available</p><p class="stat-value">8</p><p class="text-muted text-sm" style="margin-top:4px;">Currently available</p></div><div class="avatar" style="width:56px;height:56px;background:rgba(16,185,129,0.1);color:var(--emerald);font-size:1.5rem;">⚡</div></div></div></div>
+          <div class="card stat-card animate-slide-up" style="animation-delay:160ms;"><div class="card-body"><div class="flex justify-between items-center"><div><p class="stat-label">Users</p><p class="stat-value">34</p><p class="text-muted text-sm" style="margin-top:4px;">Registered users</p></div><div class="avatar" style="width:56px;height:56px;background:rgba(245,158,11,0.1);color:var(--amber);font-size:1.5rem;">👤</div></div></div></div>
+          <div class="card stat-card animate-slide-up" style="animation-delay:240ms;"><div class="card-body"><div class="flex justify-between items-center"><div><p class="stat-label">Revenue</p><p class="stat-value">$1,247</p><p class="text-muted text-sm" style="margin-top:4px;">Total earnings</p></div><div class="avatar" style="width:56px;height:56px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:1.5rem;">💰</div></div></div></div>
+        </div>
+        <!-- Charts + Metrics -->
+        <div class="grid-2" style="margin-bottom:28px;">
+          <div class="card"><div class="card-body">
+            <h3 class="heading fw-800" style="font-size:1.05rem;margin-bottom:16px;">Slot Distribution</h3>
+            <div class="donut-chart">
+              <svg viewBox="0 0 36 36" style="width:200px;height:200px;">
+                <circle cx="18" cy="18" r="14" fill="none" stroke="var(--divider)" stroke-width="4"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="var(--emerald)" stroke-width="4" stroke-dasharray="58 30" stroke-dashoffset="25" stroke-linecap="round"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="var(--red)" stroke-width="4" stroke-dasharray="22 66" stroke-dashoffset="-33" stroke-linecap="round"/>
+                <circle cx="18" cy="18" r="14" fill="none" stroke="var(--amber)" stroke-width="4" stroke-dasharray="8 80" stroke-dashoffset="-55" stroke-linecap="round"/>
+              </svg>
+              <div class="donut-center"><span class="heading fw-900" style="font-size:1.4rem;">12</span><span class="text-muted text-sm">Slots</span></div>
+            </div>
+            <div class="flex justify-center gap-2" style="margin-top:16px;">
+              <div class="flex items-center gap-1"><span style="width:8px;height:8px;border-radius:50%;background:var(--emerald);"></span><span class="text-sm text-muted fw-600">Available (8)</span></div>
+              <div class="flex items-center gap-1"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);"></span><span class="text-sm text-muted fw-600">Occupied (3)</span></div>
+              <div class="flex items-center gap-1"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);"></span><span class="text-sm text-muted fw-600">Maintenance (1)</span></div>
+            </div>
+          </div></div>
+          <div class="card"><div class="card-body">
+            <h3 class="heading fw-800" style="font-size:1.05rem;margin-bottom:8px;">Key Metrics</h3>
+            <div style="padding:16px 0;border-bottom:1px solid var(--divider);" class="flex items-center gap-2"><div class="avatar" style="width:40px;height:40px;background:rgba(34,197,94,0.1);color:var(--green);font-size:0.9rem;">📈</div><span class="text-muted fw-600 text-md" style="flex:1;">Occupancy Rate</span><span class="heading fw-800" style="font-size:1.1rem;">25%</span></div>
+            <div style="padding:16px 0;border-bottom:1px solid var(--divider);" class="flex items-center gap-2"><div class="avatar" style="width:40px;height:40px;background:rgba(245,158,11,0.1);color:var(--amber);font-size:0.9rem;">🅿️</div><span class="text-muted fw-600 text-md" style="flex:1;">Active Bookings</span><span class="heading fw-800" style="font-size:1.1rem;">3</span></div>
+            <div style="padding:16px 0;" class="flex items-center gap-2"><div class="avatar" style="width:40px;height:40px;background:rgba(16,185,129,0.1);color:var(--emerald);font-size:0.9rem;">✅</div><span class="text-muted fw-600 text-md" style="flex:1;">Completed Bookings</span><span class="heading fw-800" style="font-size:1.1rem;">127</span></div>
+          </div></div>
+        </div>
+        <!-- Recent Bookings -->
+        <div class="card"><div class="card-body">
+          <h3 class="heading fw-800" style="font-size:1.05rem;margin-bottom:20px;">Recent Bookings</h3>
+          <div class="table-wrapper"><table>
+            <thead><tr><th>User</th><th>Slot</th><th>Start Time</th><th>Status</th><th>Cost</th></tr></thead>
+            <tbody>
+              <tr><td class="flex items-center gap-2"><div class="avatar" style="width:32px;height:32px;background:rgba(34,197,94,0.1);color:var(--green);font-size:0.7rem;">T</div><span class="fw-600 text-sm">Tharusha</span></td><td class="heading fw-700">A3</td><td class="text-sm">Jun 23, 10:00 AM</td><td><span class="chip chip-green chip-outline">active</span></td><td class="fw-800" style="color:var(--emerald);">$0.00</td></tr>
+              <tr><td class="flex items-center gap-2"><div class="avatar" style="width:32px;height:32px;background:rgba(34,197,94,0.1);color:var(--green);font-size:0.7rem;">K</div><span class="fw-600 text-sm">Kamal</span></td><td class="heading fw-700">B1</td><td class="text-sm">Jun 22, 3:00 PM</td><td><span class="chip chip-emerald chip-outline">completed</span></td><td class="fw-800" style="color:var(--emerald);">$12.50</td></tr>
+              <tr><td class="flex items-center gap-2"><div class="avatar" style="width:32px;height:32px;background:rgba(34,197,94,0.1);color:var(--green);font-size:0.7rem;">N</div><span class="fw-600 text-sm">Nimal</span></td><td class="heading fw-700">A1</td><td class="text-sm">Jun 22, 1:00 PM</td><td><span class="chip chip-emerald chip-outline">completed</span></td><td class="fw-800" style="color:var(--emerald);">$8.75</td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+
+      <!-- ═══ ADMIN: ANNOUNCEMENTS ═══ -->
+      <div id="admin-announcements" class="page">
+        <div class="flex justify-between items-center" style="margin-bottom:32px;">
+          <div class="flex items-center gap-2"><div class="avatar" style="width:48px;height:48px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:1.3rem;">📢</div><div><p class="fw-700 text-sm" style="color:var(--blue);">Admin tools</p><h2 class="heading fw-800" style="font-size:1.6rem;">Announcements</h2></div></div>
+          <button class="btn btn-primary" onclick="showModal('modal-announcement')">+ New Announcement</button>
+        </div>
+        <div class="card" style="margin-bottom:16px;"><div class="card-body"><div class="flex justify-between items-center"><div><span class="chip chip-red" style="margin-bottom:8px;">Critical</span><h4 class="fw-700" style="margin-bottom:4px;">Emergency Maintenance — Slots B1-B3</h4><p class="text-muted text-sm">Due to a power surge, slots B1 through B3 are temporarily offline for safety inspection. Expected recovery: 6 hours.</p></div><span class="text-muted text-sm">2h ago</span></div></div></div>
+        <div class="card" style="margin-bottom:16px;"><div class="card-body"><div class="flex justify-between items-center"><div><span class="chip chip-amber" style="margin-bottom:8px;">Info</span><h4 class="fw-700" style="margin-bottom:4px;">New DC Fast Chargers Available</h4><p class="text-muted text-sm">We've added 2 new DC Fast chargers to zone A. Enjoy faster charging speeds up to 50 kW!</p></div><span class="text-muted text-sm">1d ago</span></div></div></div>
+        <div class="card"><div class="card-body"><div class="flex justify-between items-center"><div><span class="chip chip-green" style="margin-bottom:8px;">Success</span><h4 class="fw-700" style="margin-bottom:4px;">Weekend Discount - 15% Off Charging</h4><p class="text-muted text-sm">Enjoy 15% off all charging sessions this weekend. Discount applied automatically.</p></div><span class="text-muted text-sm">3d ago</span></div></div></div>
+      </div>
+
+      <!-- ═══ ADMIN: MAINTENANCE ═══ -->
+      <div id="admin-maintenance" class="page">
+        <div class="flex justify-between items-center" style="margin-bottom:32px;">
+          <div class="flex items-center gap-2"><div class="avatar" style="width:48px;height:48px;background:rgba(245,158,11,0.1);color:var(--amber);font-size:1.3rem;">🔧</div><div><p class="fw-700 text-sm" style="color:var(--amber);">Admin tools</p><h2 class="heading fw-800" style="font-size:1.6rem;">Maintenance</h2></div></div>
+          <button class="btn btn-primary" onclick="showModal('modal-maintenance')">+ Schedule Maintenance</button>
+        </div>
+        <div class="table-wrapper card"><table>
+          <thead><tr><th>Slot</th><th>Issue</th><th>Priority</th><th>Status</th><th>Scheduled</th><th>Technician</th></tr></thead>
+          <tbody>
+            <tr><td class="heading fw-700">B2</td><td>Charger connector damage</td><td><span class="chip chip-red">Critical</span></td><td><span class="chip chip-amber chip-outline">In Progress</span></td><td>Jun 23</td><td>Rajeev S.</td></tr>
+            <tr><td class="heading fw-700">A5</td><td>Power fluctuation</td><td><span class="chip chip-amber">Medium</span></td><td><span class="chip chip-blue chip-outline">Scheduled</span></td><td>Jun 24</td><td>Kumar P.</td></tr>
+            <tr><td class="heading fw-700">A1</td><td>Routine inspection</td><td><span class="chip chip-green">Low</span></td><td><span class="chip chip-emerald chip-outline">Completed</span></td><td>Jun 20</td><td>Saman K.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- ═══ ADMIN: ANALYTICS ═══ -->
+      <div id="admin-analytics" class="page">
+        <div class="flex items-center gap-2" style="margin-bottom:32px;">
+          <div class="avatar" style="width:48px;height:48px;background:rgba(139,92,246,0.1);color:var(--purple);font-size:1.3rem;">📊</div>
+          <div><p class="fw-700 text-sm" style="color:var(--purple);">Admin tools</p><h2 class="heading fw-800" style="font-size:1.6rem;">Analytics Dashboard</h2></div>
+        </div>
+        <div class="grid-3" style="margin-bottom:28px;">
+          <div class="card"><div class="card-body" style="text-align:center;"><p class="text-muted text-sm fw-700" style="text-transform:uppercase;">Avg. Session Duration</p><p class="heading fw-900" style="font-size:2rem;color:var(--green);margin:8px 0;">2h 45m</p><p class="text-muted text-sm">↑ 12% from last week</p></div></div>
+          <div class="card"><div class="card-body" style="text-align:center;"><p class="text-muted text-sm fw-700" style="text-transform:uppercase;">Total Energy Delivered</p><p class="heading fw-900" style="font-size:2rem;color:var(--amber);margin:8px 0;">3,450 kWh</p><p class="text-muted text-sm">↑ 8% from last week</p></div></div>
+          <div class="card"><div class="card-body" style="text-align:center;"><p class="text-muted text-sm fw-700" style="text-transform:uppercase;">Peak Usage Hour</p><p class="heading fw-900" style="font-size:2rem;color:var(--blue);margin:8px 0;">2-4 PM</p><p class="text-muted text-sm">Consistent trend</p></div></div>
+        </div>
+        <div class="card"><div class="card-body">
+          <h3 class="heading fw-800" style="margin-bottom:16px;">Weekly Revenue Trend</h3>
+          <div style="display:flex;align-items:flex-end;gap:12px;height:180px;padding:16px 0;">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--emerald));height:60%;"></div><span class="text-sm text-muted fw-600">Mon</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--emerald));height:80%;"></div><span class="text-sm text-muted fw-600">Tue</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--emerald));height:45%;"></div><span class="text-sm text-muted fw-600">Wed</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--emerald));height:90%;"></div><span class="text-sm text-muted fw-600">Thu</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--green),var(--emerald));height:100%;"></div><span class="text-sm text-muted fw-600">Fri</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--blue),var(--blue-light));height:75%;"></div><span class="text-sm text-muted fw-600">Sat</span></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--blue),var(--blue-light));height:55%;"></div><span class="text-sm text-muted fw-600">Sun</span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- ═══ ADMIN: SLOT MANAGEMENT ═══ -->
+      <div id="admin-slots" class="page">
+        <div class="flex justify-between items-center" style="margin-bottom:32px;">
+          <div class="flex items-center gap-2"><div class="avatar" style="width:48px;height:48px;background:rgba(34,197,94,0.1);color:var(--green);font-size:1.3rem;">📋</div><div><p class="fw-700 text-sm" style="color:var(--green);">Admin tools</p><div class="flex items-center gap-2"><h2 class="heading fw-800" style="font-size:1.6rem;">Slot Management</h2><span class="chip chip-green">6</span></div></div></div>
+          <button class="btn btn-primary" onclick="showAddSlotModal()">+ Add Slot</button>
+        </div>
+        <div id="admin-slots-grid" class="grid-3"></div>
+      </div>
+
+      <!-- ═══ ADMIN: BOOKINGS ═══ -->
+      <div id="admin-bookings" class="page">
+        <div class="flex items-center gap-2" style="margin-bottom:32px;">
+          <div class="avatar" style="width:48px;height:48px;background:rgba(6,182,212,0.1);color:var(--cyan);font-size:1.3rem;">📖</div>
+          <div><p class="fw-700 text-sm" style="color:var(--cyan);">Admin tools</p><h2 class="heading fw-800" style="font-size:1.6rem;">Booking Monitor</h2></div>
+        </div>
+        <div class="card"><div class="card-body">
+          <div class="table-wrapper"><table>
+            <thead><tr><th>User</th><th>Slot</th><th>Charger</th><th>Start</th><th>End</th><th>Duration</th><th>Total</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="fw-600">Tharusha</td><td class="heading fw-700">A3</td><td><span class="chip chip-green">AC</span></td><td class="text-sm">Jun 23, 10:00 AM</td><td class="text-sm">—</td><td class="fw-600">—</td><td class="fw-800" style="color:var(--emerald);">—</td><td><span class="chip chip-green chip-outline">active</span></td></tr>
+              <tr><td class="fw-600">Kamal</td><td class="heading fw-700">B1</td><td><span class="chip chip-amber">DC-Fast</span></td><td class="text-sm">Jun 22, 3:00 PM</td><td class="text-sm">Jun 22, 5:30 PM</td><td class="fw-600">2h 30m</td><td class="fw-800" style="color:var(--emerald);">$12.50</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+              <tr><td class="fw-600">Nimal</td><td class="heading fw-700">A1</td><td><span class="chip chip-green">AC</span></td><td class="text-sm">Jun 22, 1:00 PM</td><td class="text-sm">Jun 22, 4:30 PM</td><td class="fw-600">3h 30m</td><td class="fw-800" style="color:var(--emerald);">$8.75</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+              <tr><td class="fw-600">Sunil</td><td class="heading fw-700">A4</td><td><span class="chip chip-emerald">Super-Fast</span></td><td class="text-sm">Jun 21, 9:00 AM</td><td class="text-sm">Jun 21, 9:30 AM</td><td class="fw-600">0h 30m</td><td class="fw-800" style="color:var(--emerald);">$18.75</td><td><span class="chip chip-emerald chip-outline">completed</span></td></tr>
+            </tbody>
+          </table></div>
+        </div></div>
+      </div>
+
+      <!-- ═══ ADMIN: RATES ═══ -->
+      <div id="admin-rates" class="page">
+        <div class="flex items-center gap-2" style="margin-bottom:32px;">
+          <div class="avatar" style="width:48px;height:48px;background:rgba(245,158,11,0.1);color:var(--amber);font-size:1.3rem;">💲</div>
+          <div><p class="fw-700 text-sm" style="color:var(--amber);">Admin tools</p><h2 class="heading fw-800" style="font-size:1.6rem;">Charging Rates</h2></div>
+        </div>
+        <div class="grid-2" style="margin-bottom:28px;">
+          <div class="card"><div class="card-body"><p class="text-muted text-sm fw-700" style="text-transform:uppercase;margin-bottom:8px;">Charging Rate</p><p class="heading fw-900" style="font-size:2rem;color:var(--green);">$0.25 <span class="text-muted" style="font-size:0.9rem;font-weight:600;">/kWh</span></p></div></div>
+          <div class="card"><div class="card-body"><p class="text-muted text-sm fw-700" style="text-transform:uppercase;margin-bottom:8px;">Parking Rate</p><p class="heading fw-900" style="font-size:2rem;color:var(--blue);">$2.00 <span class="text-muted" style="font-size:0.9rem;font-weight:600;">/hour</span></p></div></div>
+        </div>
+        <div class="card"><div class="card-body">
+          <h3 class="heading fw-800" style="margin-bottom:20px;">Update Rates</h3>
+          <div class="grid-2">
+            <div class="input-group"><label>Charging Rate ($/kWh)</label><input type="number" value="0.25" step="0.01" /></div>
+            <div class="input-group"><label>Parking Rate ($/hour)</label><input type="number" value="2.00" step="0.50" /></div>
+          </div>
+          <button class="btn btn-primary">💾 Save Rates</button>
+        </div></div>
+      </div>
+
+      <!-- ═══ ADMIN: REPORTS ═══ -->
+      <div id="admin-reports" class="page">
+        <div class="flex items-center gap-2" style="margin-bottom:32px;">
+          <div class="avatar" style="width:48px;height:48px;background:rgba(34,197,94,0.1);color:var(--green);font-size:1.3rem;">📊</div>
+          <div><p class="fw-700 text-sm" style="color:var(--green);">Admin reports</p><h2 class="heading fw-800" style="font-size:1.8rem;">Charging User Details</h2></div>
+        </div>
+        
+        <div class="card animate-slide-up">
+          <div class="card-body" style="padding:40px;">
+            <!-- Header section -->
+            <div class="flex justify-between items-center" style="margin-bottom:32px;border-bottom:1px solid var(--divider);padding-bottom:24px;">
+              <div class="flex items-center gap-3">
+                <div class="avatar" style="width:56px;height:56px;background:rgba(34,197,94,0.1);color:var(--green);font-size:1.4rem;">👤</div>
+                <div>
+                  <h3 class="heading fw-900" style="font-size:1.5rem;line-height:1.2;">tharusha</h3>
+                  <p class="text-muted text-sm" style="font-size:0.95rem;">tharusha@gmail.com</p>
+                </div>
+              </div>
+              <span class="chip chip-green chip-outline" style="font-size:0.9rem;padding:6px 14px;border-radius:20px;">Cancelled</span>
+            </div>
+
+            <!-- Details Grid -->
+            <div class="grid-2" style="gap:40px;margin-bottom:32px;">
+              <!-- Left Column -->
+              <div>
+                <div class="flex items-center gap-2" style="margin-bottom:24px;">
+                  <span style="color:var(--green);font-size:1.1rem;">🚘</span>
+                  <h4 class="fw-800 text-md">Vehicle Details</h4>
+                </div>
+                <div style="display:grid;gap:20px;">
+                  <div>
+                    <p class="text-muted text-sm" style="margin-bottom:4px;">Vehicle Number</p>
+                    <p class="heading fw-800 text-md">bce86520</p>
+                  </div>
+                  <div>
+                    <p class="text-muted text-sm" style="margin-bottom:4px;">Vehicle Type</p>
+                    <p class="heading fw-800 text-md">suv</p>
+                  </div>
+                  <div>
+                    <p class="text-muted text-sm" style="margin-bottom:4px;">Phone</p>
+                    <p class="heading fw-800 text-md">0789652384</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div>
+                <div class="flex items-center gap-2" style="margin-bottom:24px;">
+                  <span style="color:var(--green);font-size:1.1rem;">⚡</span>
+                  <h4 class="fw-800 text-md">Charging Details</h4>
+                </div>
+                <div style="display:grid;gap:20px;">
+                  <div>
+                    <p class="text-muted text-sm" style="margin-bottom:4px;">Slot</p>
+                    <p class="heading fw-800 text-md">A1</p>
+                  </div>
+                  <div>
+                    <p class="text-muted text-sm" style="margin-bottom:4px;">Charging Power</p>
+                    <p class="heading fw-800 text-md">10 kW</p>
+                  </div>
+                  <div>
+                    <p class="text-muted text-sm" style="margin-bottom:4px;">Battery Charged</p>
+                    <p class="heading fw-800 text-md">80%</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cost Footer -->
+            <div style="background:var(--bg);border:1px solid var(--divider);border-radius:24px;padding:24px 32px;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <p class="text-muted text-sm" style="margin-bottom:4px;">Start Time</p>
+                <p class="heading fw-800 text-md">6/23/2026, 6:49:44 PM</p>
+              </div>
+              <div>
+                <p class="text-muted text-sm" style="margin-bottom:4px;">Charging Cost</p>
+                <p class="heading fw-800 text-md">$0.00</p>
+              </div>
+              <div>
+                <p class="text-muted text-sm" style="margin-bottom:4px;">Total Cost</p>
+                <p class="heading fw-800 text-md">$0.00</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ ADMIN: SETTINGS (reuse user-settings) ═══ -->
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       MODALS
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <!-- Booking Modal -->
+  <div id="modal-booking" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-booking')">
+    <div class="modal">
+      <div class="modal-header flex items-center gap-2">
+        <div class="avatar" style="width:40px;height:40px;background:rgba(16,185,129,0.1);color:var(--emerald);font-size:1.1rem;">🔋</div>
+        <h3>Confirm Booking</h3>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted text-md" style="margin-bottom:20px;">Set your desired battery charge level for this session.</p>
+        <div style="padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);">
+          <p class="fw-700 text-md" style="margin-bottom:8px;">Battery Charge Target</p>
+          <div class="flex items-center gap-2">
+            <div class="slider-track" style="flex:1;"><div class="slider-fill" style="width:80%;"></div><div class="slider-thumb" style="left:calc(80% - 10px);"></div></div>
+            <span class="fw-800" style="color:var(--emerald);font-size:1.1rem;min-width:48px;text-align:right;">80%</span>
+          </div>
+          <p class="fw-700 text-md" style="margin:20px 0 8px;">Charger Type</p>
+          <div style="display:grid;gap:8px;">
+            <button class="btn btn-outline" style="justify-content:flex-start;border-color:var(--divider);">AC Charger (7.4 kW)</button>
+            <button class="btn" style="justify-content:flex-start;background:var(--emerald);color:#fff;">DC Fast (50 kW)</button>
+            <button class="btn btn-outline" style="justify-content:flex-start;border-color:var(--divider);">Super Fast (150 kW)</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideModal('modal-booking')">Cancel</button>
+        <button class="btn" style="background:linear-gradient(135deg,var(--emerald),#059669);color:#fff;box-shadow:0 4px 14px rgba(16,185,129,0.3);" onclick="confirmBookingAction()">⚡ Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Support Modal -->
+  <div id="modal-support" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-support')">
+    <div class="modal">
+      <div class="modal-header"><h3>Parking Area Support</h3></div>
+      <div class="modal-body">
+        <p class="text-muted text-md" style="margin-bottom:20px;">Reach the parking support desk for booking, slot, and charging assistance.</p>
+        <div style="padding:20px;border-radius:12px;background:var(--bg);border:1px solid var(--divider);display:grid;gap:16px;">
+          <div class="flex items-center gap-2"><div class="avatar" style="width:44px;height:44px;background:rgba(34,197,94,0.1);color:var(--green);font-size:1rem;box-shadow:0 4px 12px rgba(34,197,94,0.15);">📧</div><div><p class="text-muted text-sm fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Email Support</p><p class="fw-700 text-md">support@evparking.com</p></div></div>
+          <div class="flex items-center gap-2"><div class="avatar" style="width:44px;height:44px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:1rem;box-shadow:0 4px 12px rgba(37,99,235,0.15);">📞</div><div><p class="text-muted text-sm fw-700" style="text-transform:uppercase;letter-spacing:0.05em;">Phone Support</p><p class="fw-700 text-md">+94 77 123 4567</p></div></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="hideModal('modal-support')">Close</button></div>
+    </div>
+  </div>
+
+  <!-- Add Slot Modal -->
+  <div id="modal-slot" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-slot')">
+    <div class="modal">
+      <div class="modal-header"><h3 id="modal-slot-title">Add New Slot</h3></div>
+      <div class="modal-body">
+        <div class="input-group"><label>Slot Number</label><input id="modal-slot-num" placeholder="e.g. A7" /></div>
+        <div class="input-group"><label>Vehicle Type</label><select id="modal-slot-type"><option value="Any">Any</option><option value="Sedan">Sedan</option><option value="SUV">SUV</option><option value="Hatchback">Hatchback</option><option value="Truck">Truck</option></select></div>
+        <div class="input-group"><label>Charging Power (kW)</label><input id="modal-slot-power" type="number" value="7.4" /></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideModal('modal-slot')">Cancel</button>
+        <button id="modal-slot-save-btn" class="btn btn-primary" onclick="hideModal('modal-slot')">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Announcement Modal -->
+  <div id="modal-announcement" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-announcement')">
+    <div class="modal">
+      <div class="modal-header"><h3>New Announcement</h3></div>
+      <div class="modal-body">
+        <div class="input-group"><label>Title</label><input placeholder="Announcement title" /></div>
+        <div class="input-group"><label>Priority</label><select><option>Info</option><option>Warning</option><option>Critical</option><option>Success</option></select></div>
+        <div class="input-group"><label>Message</label><textarea style="width:100%;padding:12px 16px;border-radius:10px;background:var(--bg);color:var(--text-primary);border:1px solid var(--divider);min-height:100px;resize:vertical;font-family:var(--font-body);" placeholder="Write your announcement..."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideModal('modal-announcement')">Cancel</button>
+        <button class="btn btn-primary" onclick="hideModal('modal-announcement')">📢 Publish</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Maintenance Modal -->
+  <div id="modal-maintenance" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-maintenance')">
+    <div class="modal">
+      <div class="modal-header"><h3>Schedule Maintenance</h3></div>
+      <div class="modal-body">
+        <div class="input-group"><label>Task Name</label><input placeholder="e.g. Firmware Update" /></div>
+        <div class="grid-2">
+          <div class="input-group"><label>Slot / Charger</label><select><option>Slot A1</option><option>Slot B2</option><option>All Slots</option></select></div>
+          <div class="input-group"><label>Technician</label><select><option>Rajeev S.</option><option>Kumar P.</option><option>Saman K.</option></select></div>
+        </div>
+        <div class="grid-2">
+          <div class="input-group"><label>Date</label><input type="date" /></div>
+          <div class="input-group"><label>Priority</label><select><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+        </div>
+        <div class="input-group"><label>Notes</label><textarea style="width:100%;padding:12px 16px;border-radius:10px;background:var(--bg);color:var(--text-primary);border:1px solid var(--divider);min-height:80px;resize:vertical;font-family:var(--font-body);" placeholder="Additional details..."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideModal('modal-maintenance')">Cancel</button>
+        <button class="btn btn-primary" onclick="hideModal('modal-maintenance')">🔧 Schedule</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stop Charging Modal -->
+  <div id="modal-stop-charging" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-stop-charging')">
+    <div class="modal">
+      <div class="modal-header"><h3 class="heading fw-800">Stop Charging?</h3></div>
+      <div class="modal-body">
+        <p class="text-muted text-md" style="margin-bottom:16px;">Are you sure you want to stop the charging session? The final cost will be calculated based on energy consumed.</p>
+        <div style="padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--divider);">
+          <p class="text-sm text-muted" style="margin-bottom:4px;">Current Battery: <strong style="color:var(--emerald);" id="stop-battery">45%</strong></p>
+          <p class="text-sm text-muted" style="margin-bottom:4px;">Energy Consumed: <strong id="stop-energy">5.55 kWh</strong></p>
+          <p class="text-sm text-muted" style="margin-bottom:4px;">Charging Cost: <strong style="color:var(--emerald);" id="stop-charge-cost">$1.39</strong></p>
+          <p class="text-sm text-muted" style="margin-bottom:8px;">Parking Cost: <strong style="color:#f97316;" id="stop-parking-cost">$2.00</strong></p>
+          <div style="border-top:1px solid var(--divider);padding-top:8px;">
+            <p class="fw-800 text-md">Total: <strong style="color:var(--blue);" id="stop-total">$3.39</strong></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideModal('modal-stop-charging')">Cancel</button>
+        <button class="btn btn-danger" onclick="endCharging()">Confirm Stop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Account Modal -->
+  <div id="modal-delete-account" class="modal-overlay hidden" onclick="if(event.target===this)hideModal('modal-delete-account')">
+    <div class="modal">
+      <div class="modal-header"><h3 style="color:var(--red);">⚠️ Permanently Delete Account?</h3></div>
+      <div class="modal-body">
+        <p class="fw-600 text-md" style="margin-bottom:12px;">This action cannot be undone. All your bookings, charging sessions, and personal data will be permanently erased.</p>
+        <p class="text-muted text-md">Are you absolutely sure you want to delete your account?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="hideModal('modal-delete-account')">Cancel</button>
+        <button class="btn btn-danger" onclick="hideModal('modal-delete-account'); showPage('page-login')">Yes, Delete My Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       PROTOTYPE CONTROLS (floating)
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <div class="proto-controls" id="proto-controls" style="display:none;">
+    <button onclick="switchRole('user')" id="ctrl-user" class="active-ctrl">👤 User View</button>
+    <button onclick="switchRole('admin')" id="ctrl-admin">🛡️ Admin View</button>
+    <button onclick="toggleTheme()" id="ctrl-theme">🌙 Toggle Theme</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════════════════════════════════════ -->
+  <script>
+    // ─── STATE ───
+    let currentRole = 'user';
+    let currentPage = 'user-home';
+    let isDark = false;
+
+    // ─── SIDEBAR CONFIG ───
+    const userLinks = [
+      { id: 'user-home', label: 'Home', icon: '🏠' },
+      { id: 'user-charging', label: 'History', icon: '📋' },
+      { id: 'user-settings', label: 'Settings', icon: '⚙️' },
+    ];
+    const adminLinks = [
+      { id: 'admin-dashboard', label: 'Dashboard', icon: '📊' },
+      { id: 'admin-announcements', label: 'Announcements', icon: '📢' },
+      { id: 'admin-maintenance', label: 'Maintenance', icon: '🔧' },
+      { id: 'admin-analytics', label: 'Analytics', icon: '📈' },
+      { id: 'admin-slots', label: 'Slots', icon: '📋' },
+      { id: 'admin-bookings', label: 'Bookings', icon: '📖' },
+      { id: 'admin-rates', label: 'Rates', icon: '💲' },
+      { id: 'admin-reports', label: 'Reports', icon: '📊' },
+      { id: 'user-settings', label: 'Settings', icon: '⚙️' },
+    ];
+
+    const slotsData = [
+      { num: 'A1', type: 'Any', power: 7.4, status: 'available' },
+      { num: 'A2', type: 'Sedan', power: 11, status: 'available' },
+      { num: 'A3', type: 'Any', power: 7.4, status: 'occupied' },
+      { num: 'A4', type: 'SUV', power: 11, status: 'available' },
+      { num: 'A5', type: 'Any', power: 7.4, status: 'available' },
+      { num: 'A6', type: 'Any', power: 12.4, status: 'available' },
+    ];
+
+    const stationsData = [
+      { name: 'Downtown EV Hub', address: '123 Main St, Colombo', distance: '1.2 km', charger: 'DC-Fast', available: 3, total: 5, hours: '06:00 - 22:00', open: true },
+      { name: 'Harbor Charge Point', address: '45 Harbor Rd, Galle', distance: '4.8 km', charger: 'AC', available: 1, total: 3, hours: '24/7', open: true },
+      { name: 'Central Mall Station', address: '78 Queen St, Kandy', distance: '12.3 km', charger: 'Super-Fast', available: 0, total: 4, hours: '08:00 - 20:00', open: false },
+    ];
+
+    // ─── INIT ───
+    function init() {
+      generateSlotCards();
+      generateStationCards();
+      generateAdminSlots();
+      updateDateTime();
+    }
+
+    // ─── FULLSCREEN PAGES ───
+    function showPage(id) {
+      document.querySelectorAll('.fullscreen-page').forEach(p => p.classList.remove('active'));
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+    }
+
+    // ─── LOGIN ───
+    function handleLogin() {
+      showPage('page-welcome');
+      // Animate welcome progress
+      let pct = 0;
+      const bar = document.getElementById('welcome-progress');
+      const iv = setInterval(() => {
+        pct += 2;
+        if (pct >= 100) { clearInterval(iv); pct = 100; }
+        bar.style.width = pct + '%';
+      }, 100);
+      // Set welcome info
+      const now = new Date();
+      const hour = now.getHours();
+      const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+      document.getElementById('welcome-greeting').textContent = greeting + ',';
+      document.getElementById('welcome-datetime').textContent =
+        now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' })
+        + ' • ' + now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+      // Auto-enter app
+      setTimeout(() => enterApp(), 5000);
+    }
+
+    function enterApp() {
+      document.querySelectorAll('.fullscreen-page').forEach(p => p.classList.remove('active'));
+      document.getElementById('app-shell').classList.remove('hidden');
+      document.getElementById('proto-controls').style.display = 'flex';
+      buildSidebar();
+      navigateTo(currentRole === 'admin' ? 'admin-dashboard' : 'user-home');
+    }
+
+    // ─── NAVIGATION ───
+    function navigateTo(pageId) {
+      currentPage = pageId;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const el = document.getElementById(pageId);
+      if (el) el.classList.add('active');
+      // Update sidebar active
+      document.querySelectorAll('.sidebar-link').forEach(l => {
+        l.classList.toggle('active', l.dataset.page === pageId);
+      });
+    }
+
+    function goHome() {
+      navigateTo(currentRole === 'admin' ? 'admin-dashboard' : 'user-home');
+    }
+
+    // ─── SIDEBAR ───
+    function buildSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const links = currentRole === 'admin' ? adminLinks : userLinks;
+      let html = '<div style="display:flex;flex-direction:column;gap:4px;">';
+      links.forEach(link => {
+        const isActive = link.id === currentPage;
+        html += `<div class="sidebar-link ${isActive?'active':''}" data-page="${link.id}" onclick="navigateTo('${link.id}')">
+          <span class="icon">${link.icon}</span>${link.label}
+        </div>`;
+      });
+      html += '</div>';
+      // Support card for users
+      if (currentRole === 'user') {
+        html += `<div class="sidebar-support" style="margin-top:auto;">
+          <div class="avatar" style="width:40px;height:40px;background:rgba(34,197,94,0.12);color:var(--green);font-size:1rem;margin-bottom:16px;">❓</div>
+          <p class="heading fw-700" style="margin-bottom:4px;">Need Help?</p>
+          <p class="text-muted text-sm" style="margin-bottom:16px;">Contact support for parking and charging assistance.</p>
+          <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center;" onclick="showModal('modal-support')">Contact Support</button>
+        </div>`;
+      }
+      sidebar.innerHTML = html;
+      // Update topbar
+      const badge = document.getElementById('role-badge-topbar');
+      if (currentRole === 'admin') {
+        badge.className = 'role-badge role-badge-admin';
+        badge.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:var(--blue);"></span> Admin';
+      } else {
+        badge.className = 'role-badge role-badge-user';
+        badge.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:var(--green);"></span> Driver';
+      }
+    }
+
+    // ─── ROLE SWITCHING ───
+    function switchRole(role) {
+      currentRole = role;
+      document.getElementById('ctrl-user').classList.toggle('active-ctrl', role === 'user');
+      document.getElementById('ctrl-admin').classList.toggle('active-ctrl', role === 'admin');
+      buildSidebar();
+      navigateTo(role === 'admin' ? 'admin-dashboard' : 'user-home');
+      // Update welcome
+      const badge = document.getElementById('welcome-role-badge');
+      const msg = document.getElementById('welcome-msg');
+      const btn = document.getElementById('welcome-continue-btn');
+      if (role === 'admin') {
+        badge.innerHTML = '🛡️ Administrator'; badge.className = 'chip chip-blue';
+        msg.textContent = "All systems are operational. You're ready to manage parking and charging stations.";
+        btn.textContent = 'Continue to Dashboard →';
+      } else {
+        badge.innerHTML = '🧑 EV Driver'; badge.className = 'chip chip-green';
+        msg.textContent = 'Ready to charge your vehicle? Find the nearest available parking slot and plug in.';
+        btn.textContent = 'Continue to Home →';
+      }
+    }
+
+    // ─── THEME ───
+    function toggleTheme() {
+      isDark = !isDark;
+      document.body.classList.toggle('light', !isDark);
+      document.getElementById('ctrl-theme').textContent = isDark ? '☀️ Toggle Theme' : '🌙 Toggle Theme';
+      
+      // Sync the settings checkbox if it exists
+      const themeCheckbox = document.querySelector('#settings-tab-prefs .switch input');
+      if (themeCheckbox) {
+        themeCheckbox.checked = isDark;
+      }
+    }
+
+    // ─── TABS ───
+    function switchHomeTab(tab, btn) {
+      btn.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('home-tab-slots').classList.toggle('hidden', tab !== 'slots');
+      document.getElementById('home-tab-stations').classList.toggle('hidden', tab !== 'stations');
+    }
+
+    function switchSettingsTab(tab, btn) {
+      btn.parentElement.querySelectorAll('.settings-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      ['profile','prefs','security'].forEach(t => {
+        document.getElementById('settings-tab-' + t).classList.toggle('hidden', t !== tab);
+      });
+    }
+
+    // ─── MODALS ───
+    function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    // ─── NOTIFICATIONS ───
+    function toggleNotifPanel() {
+      document.getElementById('notif-panel').classList.toggle('hidden');
+    }
+
+    // ─── REGISTER TYPE ───
+    function setRegType(type) {
+      document.getElementById('reg-type-user').classList.toggle('active', type === 'user');
+      document.getElementById('reg-type-admin').classList.toggle('active', type === 'admin');
+      document.getElementById('reg-vehicle').classList.toggle('hidden', type === 'admin');
+      document.getElementById('reg-vehicle-type').classList.toggle('hidden', type === 'admin');
+      document.getElementById('register-subtitle').textContent = type === 'user' ? 'Create your driver account' : 'Create your parking owner account';
+      document.getElementById('reg-step2-label').textContent = type === 'user' ? 'Vehicle Details' : 'Account Setup';
+    }
+
+    // ─── GENERATE SLOT CARDS ───
+    function generateSlotCards() {
+      const container = document.getElementById('home-tab-slots');
+      container.innerHTML = slotsData.filter(s => s.status === 'available').map((s, i) => `
+        <div class="card slot-card animate-slide-up" style="animation-delay:${i*80}ms;">
+          <div class="card-body">
+            <div class="slot-header">
+              <div class="avatar" style="width:44px;height:44px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:1.1rem;font-weight:800;">P</div>
+              <div style="flex:1;"><h4 class="heading fw-800" style="font-size:1.1rem;">Slot ${s.num}</h4></div>
+              <span class="chip chip-green chip-outline">⚡ Available</span>
+            </div>
+            <div class="slot-props">
+              <div><p class="slot-prop-label">Vehicle Type</p><p class="slot-prop-value">${s.type}</p></div>
+              <div><p class="slot-prop-label">Charging</p><p class="slot-prop-value">⚡ ${s.power} kW</p></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="showModal('modal-booking')">⚡ Book Now</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── GENERATE STATION CARDS ───
+    function generateStationCards() {
+      const container = document.getElementById('home-tab-stations');
+      container.innerHTML = stationsData.map((s, i) => `
+        <div class="card animate-slide-up" style="animation-delay:${i*80}ms;">
+          <div class="card-body">
+            <div class="flex justify-between items-center" style="margin-bottom:16px;">
+              <div class="flex items-center gap-2">
+                <div class="avatar" style="width:44px;height:44px;background:rgba(16,185,129,0.1);color:var(--emerald);font-size:1.1rem;">⚡</div>
+                <div>
+                  <h4 class="heading fw-800" style="font-size:1rem;">${s.name}</h4>
+                  <p class="text-muted text-sm">📍 ${s.distance} away</p>
+                </div>
+              </div>
+              <span class="chip ${s.open?'chip-green':'chip-red'} chip-outline">${s.open?'Open':'Closed'}</span>
+            </div>
+            <div class="station-info">
+              <div class="station-info-row">🗺️ ${s.address}</div>
+              <div class="station-info-row">🕐 ${s.hours}</div>
+              <div class="station-info-row">Charger Type: <strong>${s.charger}</strong></div>
+              <div class="station-info-row">Available: <strong>${s.available}/${s.total}</strong> chargers</div>
+            </div>
+            <button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:16px;">🧭 Get Directions</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── GENERATE ADMIN SLOT CARDS ───
+    function generateAdminSlots() {
+      const container = document.getElementById('admin-slots-grid');
+      container.innerHTML = slotsData.map((s, i) => `
+        <div class="card slot-card animate-slide-up" style="animation-delay:${i*60}ms;">
+          <div class="card-body">
+            <div class="slot-header">
+              <div class="avatar" style="width:44px;height:44px;background:rgba(37,99,235,0.1);color:var(--blue);font-size:1.1rem;font-weight:800;">P</div>
+              <div style="flex:1;"><h4 class="heading fw-800" style="font-size:1.1rem;">Slot ${s.num}</h4></div>
+              <span class="chip ${s.status==='available'?'chip-green':'chip-red'} chip-outline">${s.status==='available'?'⚡ Available':'🔒 Occupied'}</span>
+            </div>
+            <div class="slot-props">
+              <div><p class="slot-prop-label">Vehicle Type</p><p class="slot-prop-value">${s.type}</p></div>
+              <div><p class="slot-prop-label">Charging</p><p class="slot-prop-value">⚡ ${s.power} kW</p></div>
+            </div>
+            <div class="flex gap-1" style="margin-top:16px;">
+              <button class="btn btn-outline btn-sm" style="flex:1;justify-content:center;" onclick="editSlot('${s.num}')">✏️ Edit</button>
+              <button class="btn btn-sm" style="flex:1;justify-content:center;color:var(--red);border:1.5px solid rgba(244,63,94,0.3);background:transparent;">🗑️ Delete</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ─── ADMIN SLOT MODAL ───
+    function showAddSlotModal() {
+      document.getElementById('modal-slot-title').textContent = 'Add New Slot';
+      document.getElementById('modal-slot-num').value = '';
+      document.getElementById('modal-slot-type').value = 'Any';
+      document.getElementById('modal-slot-power').value = '7.4';
+      document.getElementById('modal-slot-save-btn').textContent = 'Create';
+      showModal('modal-slot');
+    }
+
+    function editSlot(slotNum) {
+      const slot = slotsData.find(s => s.num === slotNum);
+      if (!slot) return;
+      document.getElementById('modal-slot-title').textContent = 'Edit Slot';
+      document.getElementById('modal-slot-num').value = slot.num;
+      document.getElementById('modal-slot-type').value = slot.type;
+      document.getElementById('modal-slot-power').value = slot.power;
+      document.getElementById('modal-slot-save-btn').textContent = 'Update';
+      showModal('modal-slot');
+    }
+
+    // ─── DATE/TIME ───
+    function updateDateTime() {
+      const now = new Date();
+      const hour = now.getHours();
+      const greeting = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+      const el = document.getElementById('home-greeting');
+      if (el) el.textContent = `${greeting}, Tharusha 👋`;
+    }
+
+    // ─── BOOKING FLOW STATE ───
+    let bookingState = 'none'; // 'none' | 'ready' | 'charging'
+    let bookedSlot = 'A1';
+    let chargingStartTime = null;
+    let chargingInterval = null;
+    let simulatedPct = 20;
+
+    function confirmBookingAction() {
+      // Called from booking modal confirm
+      bookedSlot = 'A1';
+      bookingState = 'ready';
+      hideModal('modal-booking');
+      updateBookingUI();
+    }
+
+    function cancelBooking() {
+      bookingState = 'none';
+      if (chargingInterval) clearInterval(chargingInterval);
+      chargingInterval = null;
+      updateBookingUI();
+    }
+
+    function startCharging() {
+      bookingState = 'charging';
+      chargingStartTime = new Date();
+      simulatedPct = 20;
+      updateBookingUI();
+      // Start live simulation
+      chargingInterval = setInterval(updateLiveCharging, 1000);
+    }
+
+    function endCharging() {
+      bookingState = 'none';
+      hideModal('modal-stop-charging');
+      if (chargingInterval) clearInterval(chargingInterval);
+      chargingInterval = null;
+      updateBookingUI();
+    }
+
+    function updateBookingUI() {
+      const alert = document.getElementById('active-booking-alert');
+      const readyCard = document.getElementById('ready-to-charge');
+      const liveWidget = document.getElementById('live-charging-widget');
+      const tabsContainer = document.getElementById('home-tabs-container');
+      const slotsTab = document.getElementById('home-tab-slots');
+      const stationsTab = document.getElementById('home-tab-stations');
+
+      if (bookingState === 'none') {
+        alert.classList.add('hidden');
+        readyCard.classList.add('hidden');
+        liveWidget.classList.add('hidden');
+        tabsContainer.classList.remove('hidden');
+        slotsTab.classList.remove('hidden');
+      } else if (bookingState === 'ready') {
+        alert.classList.remove('hidden');
+        readyCard.classList.remove('hidden');
+        liveWidget.classList.add('hidden');
+        tabsContainer.classList.add('hidden');
+        slotsTab.classList.add('hidden');
+        stationsTab.classList.add('hidden');
+        document.getElementById('booked-slot-name').textContent = bookedSlot;
+      } else if (bookingState === 'charging') {
+        alert.classList.remove('hidden');
+        readyCard.classList.add('hidden');
+        liveWidget.classList.remove('hidden');
+        tabsContainer.classList.add('hidden');
+        slotsTab.classList.add('hidden');
+        stationsTab.classList.add('hidden');
+        document.getElementById('live-slot').textContent = bookedSlot;
+        document.getElementById('live-initial-batt').textContent = '20%';
+        document.getElementById('live-start-time').textContent = new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+      }
+    }
+
+    function updateLiveCharging() {
+      if (bookingState !== 'charging' || !chargingStartTime) return;
+      const now = new Date();
+      const elapsedMs = now - chargingStartTime;
+      const elapsedMin = elapsedMs / 60000;
+      const elapsedHours = elapsedMs / 3600000;
+
+      // Simulate faster for demo: 1 real second = ~1 minute of charging
+      const simElapsedHours = elapsedMs / 60000; // treat each second as a minute
+      const power = 7.4;
+      const energy = Number((power * simElapsedHours).toFixed(2));
+      const pctGained = (energy / 60) * 100;
+      simulatedPct = Math.min(20 + pctGained, 100);
+      const pct = Number(simulatedPct.toFixed(1));
+
+      const remainingEnergy = ((100 - pct) / 100) * 60;
+      const remainingMin = Math.ceil((remainingEnergy / power) * 60);
+      const remHrs = Math.floor(remainingMin / 60);
+      const remMins = remainingMin % 60;
+      const timeStr = pct >= 100 ? 'Fully charged!' : (remHrs > 0 ? `${remHrs}h ${remMins}m remaining` : `${remMins}m remaining`);
+
+      const chargingRate = 0.25;
+      const parkingRate = 2.0;
+      const chargeCost = Number((energy * chargingRate).toFixed(2));
+      const parkCost = Math.max(Number((simElapsedHours * parkingRate).toFixed(2)), 2.00);
+      const totalCost = Number((chargeCost + parkCost).toFixed(2));
+
+      const durMin = Math.floor(elapsedMs / 60000);
+      const durH = Math.floor(durMin / 60);
+      const durM = durMin % 60;
+
+      // Update UI
+      document.getElementById('live-battery-pct').textContent = pct + '%';
+      document.querySelector('.battery-ring').style.setProperty('--pct', pct);
+      document.getElementById('live-time-remaining').textContent = timeStr;
+      document.getElementById('live-energy').textContent = energy + ' kWh';
+      document.getElementById('live-duration').textContent = `${durH}h ${durM}m`;
+      document.getElementById('live-charge-cost').textContent = '$' + chargeCost;
+      document.getElementById('live-parking-cost').textContent = '$' + parkCost.toFixed(2);
+      document.getElementById('live-total-cost').textContent = '$' + totalCost;
+
+      // Update stop dialog
+      document.getElementById('stop-battery').textContent = pct + '%';
+      document.getElementById('stop-energy').textContent = energy + ' kWh';
+      document.getElementById('stop-charge-cost').textContent = '$' + chargeCost;
+      document.getElementById('stop-parking-cost').textContent = '$' + parkCost.toFixed(2);
+      document.getElementById('stop-total').textContent = '$' + totalCost;
+    }
+
+    // ─── INIT ON LOAD ───
+    init();
+  </script>
+</body>
+</html>
